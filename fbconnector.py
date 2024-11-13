@@ -22,9 +22,7 @@ ACCESS_TOKEN = os.getenv("myaccesstoken")
 FB_GRAPH_API_URL = "https://graph.facebook.com/v14.0"
 
 def fetch_facebook_posts(query, limit=10):
-    """
-    Cette fonction récupère les publications Facebook contenant le mot-clé défini.
-    """
+
     url = f"{FB_GRAPH_API_URL}/search"
     params = {
         'access_token': ACCESS_TOKEN,
@@ -43,9 +41,6 @@ def fetch_facebook_posts(query, limit=10):
         return []
 
 def save_post_to_mongodb(post_data):
-    """
-    Sauvegarde une publication dans MongoDB via pymongo.
-    """
     post = {
         'page_id': post_data['page_id'],
         'page_name': post_data['page_name'],
@@ -61,9 +56,7 @@ def save_post_to_mongodb(post_data):
         print(f"Erreur lors de l'insertion dans MongoDB: {e}")
 
 def process_and_store_posts(posts):
-    """
-    Transforme et stocke chaque publication de la liste dans MongoDB.
-    """
+
     for post in posts:
         for post_detail in post.get('posts', {}).get('data', []):
             post_data = {
@@ -76,7 +69,7 @@ def process_and_store_posts(posts):
             save_post_to_mongodb(post_data)
 
 def main():
-    query = "World Cup 2024" 
+    query = "Tech" 
     print(f"Recherche des publications concernant : {query}")
     posts = fetch_facebook_posts(query)
     process_and_store_posts(posts)
